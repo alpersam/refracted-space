@@ -24,7 +24,7 @@
   --color-link-hover: #aaaaaa;
 
   /* Typography */
-  --font-heading: "Outfit", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-heading: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-sans: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", "Fira Mono", Menlo,
     monospace;
@@ -113,7 +113,7 @@ h4 {
 
 h1 {
   font-size: var(--text-4xl);
-  font-weight: 800;
+  font-weight: 700;
 }
 h2 {
   font-size: var(--text-2xl);
