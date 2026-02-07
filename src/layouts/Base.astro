@@ -192,6 +192,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       .footer-location {
         color: var(--color-text-secondary);
       }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          gap: var(--space-4);
+        }
+
+        .logo-text {
+          font-size: var(--text-xs);
+        }
+      }
     </style>
   </body>
 </html>
