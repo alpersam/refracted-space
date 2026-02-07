@@ -1,0 +1,143 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formattedDate = post.data.date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<Base title={post.data.title} description={post.data.description} ogImage={post.data.image}>
+  <article class="container">
+    <!-- Post header -->
+    <header class="post-header fade-up">
+      <div class="post-meta">
+        <time class="mono" datetime={post.data.date.toISOString()}>{formattedDate}</time>
+
+      </div>
+      <h1>{post.data.title}</h1>
+      <p class="post-desc">{post.data.description}</p>
+    </header>
+
+    <!-- Full-bleed image -->
+    {post.data.image && (
+      <div class="post-image fade-up stagger-2">
+        <img src={post.data.image} alt="" loading="eager" />
+      </div>
+    )}
+
+    <!-- Post body -->
+    <div class="post-body content-width fade-up stagger-3">
+      <Content />
+    </div>
+
+    <!-- Back link -->
+    <nav class="post-nav content-width fade-up stagger-4">
+      <a href="/blog" class="back-link mono">&larr; All posts</a>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .post-header {
+    padding: var(--space-24) 0 var(--space-12);
+    max-width: var(--content-width);
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+  }
+
+  .post-meta time {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+
+  .post-header h1 {
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-4);
+  }
+
+  .post-desc {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+
+  /* Full-bleed image */
+  .post-image {
+    margin: 0 calc(-1 * var(--space-6)) var(--space-12);
+    overflow: hidden;
+  }
+
+  .post-image img {
+    width: 100%;
+    max-height: 32rem;
+    object-fit: cover;
+  }
+
+  /* Body prose */
+  .post-body {
+    padding-bottom: var(--space-16);
+  }
+
+  .post-body :global(h2) {
+    margin-top: var(--space-12);
+    margin-bottom: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .post-body :global(h3) {
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-3);
+  }
+
+  .post-body :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Back nav */
+  .post-nav {
+    padding-bottom: var(--space-24);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-6);
+  }
+
+  .back-link {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .back-link:hover {
+    color: #ffffff;
+  }
+
+  @media (max-width: 768px) {
+    .post-header {
+      padding: var(--space-16) 0 var(--space-8);
+    }
+  }
+</style>

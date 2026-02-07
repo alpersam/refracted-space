@@ -1,0 +1,142 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description = "Writing on space engineering, Zurich, and identity.", ogImage } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title === "Home" ? "refracted.space" : `${title} — refracted.space`}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {ogImage && <meta property="og:image" content={new URL(ogImage, Astro.site)} />}
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <style is:global>
+      @import "../styles/global.css";
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="container">
+        <a href="/" class="site-logo">refracted<span class="dot">.</span>space</a>
+        <div class="nav-links">
+          <a href="/blog" class="nav-link">Writing</a>
+          <a href="/about" class="nav-link">About</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-rule"></div>
+        <div class="footer-content">
+          <p class="mono">&copy; {new Date().getFullYear()} refracted.space</p>
+          <p class="mono footer-location">Zürich, CH</p>
+        </div>
+      </div>
+    </footer>
+
+    <style>
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(10, 10, 10, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .site-header nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 3.5rem;
+      }
+
+      .site-logo {
+        font-size: var(--text-sm);
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        color: #ffffff;
+      }
+
+      .site-logo:hover {
+        color: #ffffff;
+      }
+
+      .dot {
+        color: var(--color-text-secondary);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: var(--space-8);
+      }
+
+      .nav-link {
+        font-size: var(--text-sm);
+        color: var(--color-text-secondary);
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        transition: color var(--duration) var(--ease-out);
+      }
+
+      .nav-link:hover {
+        color: #ffffff;
+      }
+
+      .site-footer {
+        padding: var(--space-16) 0 var(--space-8);
+      }
+
+      .footer-rule {
+        border-top: 1px solid var(--color-border);
+        margin-bottom: var(--space-6);
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        color: var(--color-text-secondary);
+        font-size: var(--text-xs);
+      }
+
+      .footer-location {
+        color: var(--color-text-secondary);
+      }
+    </style>
+  </body>
+</html>
