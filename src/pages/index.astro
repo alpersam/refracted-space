@@ -78,14 +78,15 @@ const rest = posts.slice(1);
 
   .hero h1 {
     font-size: var(--text-5xl);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
     margin-bottom: var(--space-6);
   }
 
   .dot {
     color: var(--color-text-secondary);
+    transition: color var(--duration) var(--ease-out);
   }
 
   .hero-sub {
@@ -117,13 +118,15 @@ const rest = posts.slice(1);
     padding: var(--space-8);
     border: 1px solid var(--color-border);
     transition: border-color var(--duration) var(--ease-out),
-      background var(--duration) var(--ease-out);
+      background var(--duration) var(--ease-out),
+      transform var(--duration) var(--ease-out);
   }
 
   .featured-card:hover {
-    border-color: var(--color-text-secondary);
+    border-color: rgba(255, 255, 255, 0.15);
     background: var(--color-surface);
     color: var(--color-text);
+    transform: translateY(-2px);
   }
 
   .featured-meta {
@@ -154,11 +157,13 @@ const rest = posts.slice(1);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--color-text-secondary);
-    transition: color var(--duration) var(--ease-out);
+    transition: color var(--duration) var(--ease-out),
+      letter-spacing var(--duration) var(--ease-out);
   }
 
   .featured-card:hover .read-more {
     color: #ffffff;
+    letter-spacing: 0.14em;
   }
 
   /* Post grid */
@@ -180,7 +185,8 @@ const rest = posts.slice(1);
     gap: var(--space-3);
     padding: var(--space-6);
     background: var(--color-bg);
-    transition: background var(--duration) var(--ease-out);
+    transition: background var(--duration) var(--ease-out),
+      transform var(--duration) var(--ease-out);
   }
 
   .post-card:hover {
@@ -195,6 +201,11 @@ const rest = posts.slice(1);
 
   .post-card h3 {
     font-size: var(--text-lg);
+    transition: letter-spacing var(--duration) var(--ease-out);
+  }
+
+  .post-card:hover h3 {
+    letter-spacing: -0.01em;
   }
 
   .post-card p {

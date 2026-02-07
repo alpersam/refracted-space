@@ -1,4 +1,6 @@
 ---
+import { ClientRouter } from "astro:transitions";
+
 interface Props {
   title: string;
   description?: string;
@@ -31,12 +33,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <ClientRouter />
 
     <style is:global>
       @import "../styles/global.css";
@@ -45,7 +49,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <body>
     <header class="site-header">
       <nav class="container">
-        <a href="/" class="site-logo">refracted<span class="dot">.</span>space</a>
+        <a href="/" class="site-logo" transition:persist>
+          <img src="/logo.jpg" alt="refracted.space" class="logo-img" />
+          <span class="logo-text">refracted<span class="dot">.</span>space</span>
+        </a>
         <div class="nav-links">
           <a href="/blog" class="nav-link">Writing</a>
           <a href="/about" class="nav-link">About</a>
@@ -53,7 +60,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       </nav>
     </header>
 
-    <main>
+    <main transition:animate="slide">
       <slot />
     </main>
 
@@ -72,33 +79,63 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         position: sticky;
         top: 0;
         z-index: 100;
-        background: rgba(10, 10, 10, 0.85);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--color-border);
+        background: rgba(10, 10, 10, 0.6);
+        backdrop-filter: blur(20px) saturate(1.4);
+        -webkit-backdrop-filter: blur(20px) saturate(1.4);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 1px 24px rgba(0, 0, 0, 0.3);
       }
 
       .site-header nav {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 3.5rem;
+        height: 4rem;
       }
 
       .site-logo {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        transition: opacity var(--duration) var(--ease-out);
+      }
+
+      .site-logo:hover {
+        opacity: 0.8;
+        color: #ffffff;
+      }
+
+      .logo-img {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        object-fit: cover;
+        filter: grayscale(30%);
+        transition: filter var(--duration) var(--ease-out),
+          transform var(--duration) var(--ease-out);
+      }
+
+      .site-logo:hover .logo-img {
+        filter: grayscale(0%);
+        transform: scale(1.05);
+      }
+
+      .logo-text {
+        font-family: var(--font-heading);
         font-size: var(--text-sm);
-        font-weight: 600;
+        font-weight: 700;
         letter-spacing: 0.02em;
         text-transform: uppercase;
         color: #ffffff;
       }
 
-      .site-logo:hover {
-        color: #ffffff;
-      }
-
       .dot {
         color: var(--color-text-secondary);
+        transition: color var(--duration) var(--ease-out);
+      }
+
+      .site-logo:hover .dot {
+        color: #ffffff;
       }
 
       .nav-links {
@@ -107,15 +144,33 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       }
 
       .nav-link {
+        font-family: var(--font-heading);
         font-size: var(--text-sm);
+        font-weight: 600;
         color: var(--color-text-secondary);
         letter-spacing: 0.02em;
         text-transform: uppercase;
         transition: color var(--duration) var(--ease-out);
+        position: relative;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: #ffffff;
+        transition: width var(--duration) var(--ease-out);
       }
 
       .nav-link:hover {
         color: #ffffff;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
       }
 
       .site-footer {
