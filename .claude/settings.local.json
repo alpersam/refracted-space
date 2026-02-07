@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npx astro build)",
+      "Bash(git init:*)",
+      "Bash(gh:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
