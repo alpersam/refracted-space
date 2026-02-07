@@ -8,6 +8,11 @@ const posts = (await getCollection("blog"))
 
 const featured = posts[0];
 const rest = posts.slice(1);
+
+function getReadingTime(body: string | undefined) {
+  const words = body ? body.split(/\s+/).length : 0;
+  return Math.max(1, Math.ceil(words / 230));
+}
 ---
 
 <Base title="Home">
@@ -38,7 +43,8 @@ const rest = posts.slice(1);
               day: "numeric",
             })}
           </time>
-
+          <span class="meta-sep">/</span>
+          <span class="mono reading-time">{getReadingTime(featured.body)} min read</span>
         </div>
         <h2 class="featured-title">{featured.data.title}</h2>
         <p class="featured-excerpt">{featured.data.description}</p>
@@ -136,9 +142,16 @@ const rest = posts.slice(1);
     margin-bottom: var(--space-4);
   }
 
-  .featured-meta time {
+  .featured-meta time,
+  .reading-time {
     font-size: var(--text-xs);
     color: var(--color-text-secondary);
+  }
+
+  .meta-sep {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    opacity: 0.3;
   }
 
   .featured-title {

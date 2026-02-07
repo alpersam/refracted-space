@@ -27,18 +27,24 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    {ogImage && <meta property="og:image" content={new URL(ogImage, Astro.site)} />}
+    <meta property="og:image" content={new URL(ogImage || "/logo.jpg", Astro.site)} />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      as="style"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Favicon -->
+    <!-- Favicon & RSS -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title="refracted.space" href="/rss.xml" />
 
     <ClientRouter />
 
@@ -55,6 +61,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         </a>
         <div class="nav-links">
           <a href="/blog" class="nav-link">Writing</a>
+          <a href="/projects" class="nav-link">Projects</a>
           <a href="/about" class="nav-link">About</a>
         </div>
       </nav>
@@ -69,7 +76,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         <div class="footer-rule"></div>
         <div class="footer-content">
           <p class="mono">&copy; {new Date().getFullYear()} refracted.space</p>
-          <p class="mono footer-location">Zürich, CH</p>
+          <div class="footer-right">
+            <a href="/rss.xml" class="mono footer-link">RSS</a>
+            <span class="mono footer-location">Zürich, CH</span>
+          </div>
         </div>
       </div>
     </footer>
@@ -189,8 +199,25 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         font-size: var(--text-xs);
       }
 
+      .footer-right {
+        display: flex;
+        gap: var(--space-4);
+        align-items: center;
+      }
+
+      .footer-link {
+        font-size: var(--text-xs);
+        color: var(--color-text-secondary);
+        transition: color var(--duration) var(--ease-out);
+      }
+
+      .footer-link:hover {
+        color: #ffffff;
+      }
+
       .footer-location {
         color: var(--color-text-secondary);
+        font-size: var(--text-xs);
       }
 
       @media (max-width: 768px) {

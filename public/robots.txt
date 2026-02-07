@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://refracted.space/sitemap-index.xml
